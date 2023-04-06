@@ -16,15 +16,13 @@ public class SportServiceImpl implements SportService {
 	
 	
 	@Override
-	public void setSportDAO(SportDAO sportDAOInstance) {
-		// TODO Auto-generated method stub
-		
+	public void setSportDAO(SportDAO sportDAO) {
+		this.sportDAO = sportDAO;
 	}
 
 	@Override
-	public void setAtletaDAO(AtletaDAO atletaDAOInstance) {
-		// TODO Auto-generated method stub
-		
+	public void setAtletaDAO(AtletaDAO atletaDAO) {
+		this.atletaDAO = atletaDAO;		
 	}
 
 	@Override
@@ -46,40 +44,43 @@ public class SportServiceImpl implements SportService {
 
 	@Override
 	public Sport caricaSingoloElemento(Long id) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		EntityManager entityManager = EntityManagerUtil.getEntityManager();
+		try {
+			// injection
+			sportDAO.setEntityManager(entityManager);
+
+			// esecuzione metodo
+			return sportDAO.get(id);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			EntityManagerUtil.closeEntityManager(entityManager);
+		}
 	}
 
 	@Override
 	public void aggiorna(Sport sportInstance) throws Exception {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void inserisciNuovo(Sport sportInstance) throws Exception {
-		
 		EntityManager entityManager = EntityManagerUtil.getEntityManager();
-
 		try {
-			// questo è come il MyConnection.getConnection()
+
+			// è un cambiamento del database,
+			// quindi devo iniziare una Transaction
 			entityManager.getTransaction().begin();
 
-			// uso l'injection per il dao
+			// injection
 			sportDAO.setEntityManager(entityManager);
 
-			// eseguo quello che realmente devo fare
-			sportDAO.insert(sportInstance);
+			// esecuzione metodo
+			sportDAO.update(sportInstance);
 
+			// faccio il commit
 			entityManager.getTransaction().commit();
-			
 		} catch (Exception e) {
-			
+			// faccio rollback se non va a buon fine
 			entityManager.getTransaction().rollback();
-			
 			e.printStackTrace();
 			throw e;
-			
 		} finally {
 			EntityManagerUtil.closeEntityManager(entityManager);
 		}
@@ -87,8 +88,60 @@ public class SportServiceImpl implements SportService {
 	}
 
 	@Override
+	public void inserisciNuovo(Sport sportInstance) throws Exception {
+		
+		EntityManager entityManager = EntityManagerUtil.getEntityManager();
+		try {
+
+			// è un cambiamento del database,
+			// quindi devo iniziare una Transaction
+			entityManager.getTransaction().begin();
+
+			// injection
+			sportDAO.setEntityManager(entityManager);
+
+			// esecuzione metodo
+			sportDAO.insert(sportInstance);
+
+			// faccio il commit
+			entityManager.getTransaction().commit();
+		} catch (Exception e) {
+			// faccio rollback se non va a buon fine
+			entityManager.getTransaction().rollback();
+			e.printStackTrace();
+			throw e;
+		} finally {
+			EntityManagerUtil.closeEntityManager(entityManager);
+		}
+
+		
+	}
+
+	@Override
 	public void rimuovi(Long idSportToRemove) throws Exception {
-		// TODO Auto-generated method stub
+		EntityManager entityManager = EntityManagerUtil.getEntityManager();
+		try {
+
+			// è un cambiamento del database,
+			// quindi devo iniziare una Transaction
+			entityManager.getTransaction().begin();
+
+			// injection
+			sportDAO.setEntityManager(entityManager);
+
+			// esecuzione metodo
+			sportDAO.delete(sportDAO.get(idSportToRemove));
+
+			// faccio il commit
+			entityManager.getTransaction().commit();
+		} catch (Exception e) {
+			// faccio rollback se non va a buon fine
+			entityManager.getTransaction().rollback();
+			e.printStackTrace();
+			throw e;
+		} finally {
+			EntityManagerUtil.closeEntityManager(entityManager);
+		}
 		
 	}
 

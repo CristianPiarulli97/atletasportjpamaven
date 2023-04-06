@@ -15,7 +15,7 @@ public class AtletaServiceImpl  implements AtletaService{
 	private SportDAO sportDao;
 	
 	@Override
-	public void setAtletaDAO(AtletaDAO atletaDAOInstance) {
+	public void setAtletaDAO(AtletaDAO atletaDao) {
 		this.atletaDao = atletaDao;
 		
 	}
@@ -88,6 +88,8 @@ public class AtletaServiceImpl  implements AtletaService{
 
 	@Override
 	public void inserisciNuovo(Atleta atletaInstance) throws Exception {
+		
+		//Come una connetaction
 		EntityManager entityManager = EntityManagerUtil.getEntityManager();
 		try {
 			// è un cambiamento del database,

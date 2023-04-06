@@ -1,6 +1,7 @@
 package it.atletasportjpamaven.test;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import it.atletasportjpamaven.dao.EntityManagerUtil;
 import it.atletasportjpamaven.model.Atleta;
@@ -19,15 +20,16 @@ public class TestAtletasportjpamaven {
 		// ora passo alle operazioni CRUD
 		try {
 
-		//	PROBLEMA 
-		//testInserisciNuovoSport(sportServiceInstance);
+		//	testInserisciNuovoSport(sportServiceInstance);
 			
-		testInserisciNuovoAtleta(atletaServiceInstance);
+		//	testInserisciNuovoAtleta(atletaServiceInstance);
 			
-			
+		//	testDeleteAtleta(atletaServiceInstance);
 
+		//  testUpdateAtleta(atletaServiceInstance);
 			
-			
+		//	System.out.println(atletaServiceInstance.listAll());
+		//	System.out.println(sportServiceInstance.listAll());
 			
 			
 
@@ -62,6 +64,41 @@ public class TestAtletasportjpamaven {
 			throw new RuntimeException("testInserisciNuovoUtente fallito ");
 
 		System.out.println(".......testInserisciNuovoUtente fine: PASSED.............");
+	}
+	
+	private static void testDeleteAtleta(AtletaService atletaServiceInstance) throws Exception {
+		System.out.println("-----TEST testDeleteAtleta INIZIO-----");
+		List<Atleta> listaAtletiPrimaDellaRimozione = atletaServiceInstance.listAll();
+		if (listaAtletiPrimaDellaRimozione.size() < 1)
+			throw new RuntimeException("testDeleteAtleta FALLITO: non sono presenti atleti in lista.");
+
+		// inserisco un atleta per poi eliminarlo
+		Atleta nuovoAtleta = new Atleta("Ciro", "Immobile", LocalDate.of(1990, 02, 11), 38, 5);
+		atletaServiceInstance.inserisciNuovo(nuovoAtleta);
+		if (nuovoAtleta.getId() == null) {
+			throw new RuntimeException("testDeleteAtleta FALLITO: atleta non inserito.");
+		}
+		atletaServiceInstance.rimuovi(nuovoAtleta.getId());
+		List<Atleta> listaAtletiDopoDellaRimozione = atletaServiceInstance.listAll();
+		if (listaAtletiPrimaDellaRimozione.size() != listaAtletiDopoDellaRimozione.size())
+			throw new RuntimeException("testDeleteAtleta FALLITO: atleta non rimosso.");
+		System.out.println("-----TEST testDeleteAtleta FINE-----");
+
+	}
+	
+	private static void testUpdateAtleta(AtletaService atletaServiceInstance) throws Exception {
+		System.out.println("-----TEST testUpdateAtleta INIZIO-----");
+		List<Atleta> listaAtleti = atletaServiceInstance.listAll();
+		if (listaAtleti.size() < 1)
+			throw new RuntimeException("testDeleteAtleta FALLITO: non sono presenti atleti in lista.");
+		
+		Atleta atletaDaAggiornare = listaAtleti.get(2);
+		String nuovoNome = "Piero";
+		atletaDaAggiornare.setNome(nuovoNome);
+		atletaServiceInstance.aggiorna(atletaDaAggiornare);
+		System.out.println(atletaDaAggiornare);
+		System.out.println("-----TEST testUpdateAtleta FINE-----");
+	
 	}
 
 	

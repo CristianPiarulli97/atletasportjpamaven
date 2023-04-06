@@ -132,8 +132,8 @@ public class Atleta {
 
 	@Override
 	public String toString() {
-		return "Atleta [id=" + id + ", nome=" + nome + ", cognome=" + cognome + ", dataDiNascita=" + dataDiNascita
-				+ ", codice=" + codice + ", numeroMedaglieVinte=" + numeroMedaglieVinte + "]";
+		return "  Atleta [id=" + id + ", nome=" + nome + ", cognome=" + cognome + ", dataDiNascita=" + dataDiNascita
+				+ ", codice=" + codice + ", numeroMedaglieVinte=" + numeroMedaglieVinte + "]\n";
 	}
 	
 	

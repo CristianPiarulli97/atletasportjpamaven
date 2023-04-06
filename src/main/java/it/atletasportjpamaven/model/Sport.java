@@ -84,7 +84,7 @@ public class Sport {
 	@Override
 	public String toString() {
 		return "Sport [id=" + id + ", descrizione=" + descrizione + ", dataInizio=" + dataInizio + ", dataFine="
-				+ dataFine + "]";
+				+ dataFine + "]\n";
 	}
 	
 	

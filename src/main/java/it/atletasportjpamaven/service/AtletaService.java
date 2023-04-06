@@ -19,7 +19,7 @@ public interface AtletaService {
 
 	public void rimuovi(Long idAtletaToRemove) throws Exception;
 
-	public Atleta cercaPerDescrizioneECodice(String descrizione, String codice) throws Exception;
+	
 	
 
 	

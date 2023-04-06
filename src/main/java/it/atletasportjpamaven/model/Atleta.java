@@ -59,6 +59,17 @@ public class Atleta {
 	}
 
 	
+	
+	public Atleta(String nome, String cognome, LocalDate dataDiNascita, int codice, int numeroMedaglieVinte) {
+		super();
+		this.nome = nome;
+		this.cognome = cognome;
+		this.dataDiNascita = dataDiNascita;
+		this.codice = codice;
+		this.numeroMedaglieVinte = numeroMedaglieVinte;
+	}
+
+
 	public Atleta () {
 		
 	}

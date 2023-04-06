@@ -29,8 +29,19 @@ public class SportServiceImpl implements SportService {
 
 	@Override
 	public List<Sport> listAll() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		EntityManager entityManager = EntityManagerUtil.getEntityManager();
+		try {
+			// injection
+			sportDAO.setEntityManager(entityManager);
+
+			// esecuzione metodo
+			return sportDAO.list();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			EntityManagerUtil.closeEntityManager(entityManager);
+		}
 	}
 
 	@Override

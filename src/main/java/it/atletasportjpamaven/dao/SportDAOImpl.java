@@ -14,20 +14,19 @@ public class SportDAOImpl implements SportDAO{
 	
 	@Override
 	public List<Sport> list() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		return entityManager.createQuery("from Sport", Sport.class).getResultList();
 	}
 
 	@Override
 	public Sport get(Long id) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		return entityManager.find(Sport.class, id);		
 	}
 
 	@Override
-	public void update(Sport o) throws Exception {
-		// TODO Auto-generated method stub
-		
+	public void update(Sport sportInstance) throws Exception {
+		if (sportInstance == null)
+			throw new Exception("Problema valore input");
+		sportInstance = entityManager.merge(sportInstance);		
 	}
 
 	@Override    
@@ -40,9 +39,10 @@ public class SportDAOImpl implements SportDAO{
 	}
 
 	@Override
-	public void delete(Sport o) throws Exception {
-		// TODO Auto-generated method stub
-		
+	public void delete(Sport sportInstance) throws Exception {
+		if (sportInstance == null)
+			throw new Exception("Problema valore input");
+		entityManager.remove(entityManager.merge(sportInstance));		
 	}
 
 	@Override

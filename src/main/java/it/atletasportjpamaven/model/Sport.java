@@ -81,6 +81,12 @@ public class Sport {
 		
 	}
 
+	
+	public Sport(String descrizione) {
+		super();
+		this.descrizione = descrizione;
+	}
+
 	@Override
 	public String toString() {
 		return "Sport [id=" + id + ", descrizione=" + descrizione + ", dataInizio=" + dataInizio + ", dataFine="

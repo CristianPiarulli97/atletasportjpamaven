@@ -19,7 +19,7 @@ public interface AtletaService {
 
 	public void rimuovi(Long idAtletaToRemove) throws Exception;
 
-	
+	public Long sommaMedaglieVinteInSportChiusi() throws Exception;
 	
 
 	

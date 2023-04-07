@@ -3,6 +3,7 @@ package it.atletasportjpamaven.dao;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 
 import it.atletasportjpamaven.model.Sport;
 
@@ -49,6 +50,11 @@ public class SportDAOImpl implements SportDAO{
 	public void setEntityManager(EntityManager entityManager) {
 		this.entityManager= entityManager;
 		
+	}
+	
+	public List<Sport> findMistakes(){
+		TypedQuery<Sport> query = entityManager.createQuery("from Sport s where s.dataFine < s.dataInizio", Sport.class);
+		return query.getResultList();
 	}
 
 }

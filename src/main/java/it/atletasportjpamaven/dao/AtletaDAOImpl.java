@@ -3,8 +3,12 @@ package it.atletasportjpamaven.dao;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+
+import com.mysql.cj.Query;
 
 import it.atletasportjpamaven.model.Atleta;
+import it.atletasportjpamaven.model.Sport;
 
 public class AtletaDAOImpl implements AtletaDAO {
 
@@ -45,5 +49,13 @@ public class AtletaDAOImpl implements AtletaDAO {
 	public void setEntityManager(EntityManager entityManager) {
 		this.entityManager=entityManager;
 	}
+	
+	public Long sumMedaglieVinteSportChiusi() {
+		Long somma = 0l;
+		javax.persistence.Query query = entityManager.createQuery("select sum(a.numeroMedaglieVinte) from Atleta a join a.sports s where s.dataFine is not null");
+		somma = (Long) query.getSingleResult();
+		return somma;
+	}
+
 
 }

@@ -141,7 +141,21 @@ public class AtletaServiceImpl  implements AtletaService{
 		}		
 	}
 
+	public Long sommaMedaglieVinteInSportChiusi() throws Exception {
+		EntityManager entityManager = EntityManagerUtil.getEntityManager();
+		try {
+			// injection
+			atletaDao.setEntityManager(entityManager);
 
+			// esecuzione metodo
+			return atletaDao.sumMedaglieVinteSportChiusi();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			EntityManagerUtil.closeEntityManager(entityManager);
+		}
+	}
 	
 
 }

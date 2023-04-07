@@ -21,6 +21,9 @@ public interface SportService {
 
 	public Sport cercaPerDescrizioneECodice(String descrizione, String codice) throws Exception;
 	
+	public List <Sport> cercaErrori() throws Exception;
+	
+	
 	
 	void setSportDAO(SportDAO sportDAOInstance);
 	void setAtletaDAO(AtletaDAO atletaDAOInstance);

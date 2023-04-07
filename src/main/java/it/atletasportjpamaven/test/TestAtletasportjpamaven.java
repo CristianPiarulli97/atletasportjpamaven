@@ -17,21 +17,24 @@ public class TestAtletasportjpamaven {
 		SportService sportServiceInstance = MyServiceFactory.getSportServiceInstance();
 		AtletaService atletaServiceInstance = MyServiceFactory.getAtletaServiceInstance();
 
-		// ora passo alle operazioni CRUD
 		try {
 
-		//	testInserisciNuovoSport(sportServiceInstance);
-			
-		//	testInserisciNuovoAtleta(atletaServiceInstance);
-			
-		//	testDeleteAtleta(atletaServiceInstance);
+			// testInserisciNuovoSport(sportServiceInstance);
 
-		//  testUpdateAtleta(atletaServiceInstance);
+			// testInserisciNuovoAtleta(atletaServiceInstance);
+
+			// testDeleteAtleta(atletaServiceInstance);
+
+			// testUpdateAtleta(atletaServiceInstance);
+
+			// testDeleteSport(sportServiceInstance);
+
+			// 	testTrovaErrori(sportServiceInstance);
 			
-		//	System.out.println(atletaServiceInstance.listAll());
-		//	System.out.println(sportServiceInstance.listAll());
-			
-			
+				testSommaMedaglieInSportChiusi(atletaServiceInstance);
+
+			// System.out.println(atletaServiceInstance.listAll());
+			// System.out.println(sportServiceInstance.listAll());
 
 		} catch (Throwable e) {
 			e.printStackTrace();
@@ -40,10 +43,9 @@ public class TestAtletasportjpamaven {
 			// main
 			EntityManagerUtil.shutdown();
 		}
-		
+
 	}
-		
-		
+
 	private static void testInserisciNuovoAtleta(AtletaService atletaServiceInstance) throws Exception {
 		System.out.println("-----TEST Test InserisciNuovoAtleta INIZIO-----");
 		Atleta nuovoAtleta = new Atleta("Cristian", "Piarulli", LocalDate.of(1997, 01, 25), 0001, 71);
@@ -53,19 +55,18 @@ public class TestAtletasportjpamaven {
 		}
 		System.out.println("-----Fine Test InserisciNuovoAtleta-----");
 	}
-	
-	
+
 	private static void testInserisciNuovoSport(SportService sportServiceInstance) throws Exception {
 		System.out.println(".......testInserisciNuovoUtente inizio.............");
 
-		Sport sportNuovo = new Sport("Tennis", LocalDate.of(1910,04,24), null);
+		Sport sportNuovo = new Sport("Tennis", LocalDate.of(1910, 04, 24), null);
 		sportServiceInstance.inserisciNuovo(sportNuovo);
 		if (sportNuovo.getId() == null)
 			throw new RuntimeException("testInserisciNuovoUtente fallito ");
 
 		System.out.println(".......testInserisciNuovoUtente fine: PASSED.............");
 	}
-	
+
 	private static void testDeleteAtleta(AtletaService atletaServiceInstance) throws Exception {
 		System.out.println("-----TEST testDeleteAtleta INIZIO-----");
 		List<Atleta> listaAtletiPrimaDellaRimozione = atletaServiceInstance.listAll();
@@ -85,23 +86,86 @@ public class TestAtletasportjpamaven {
 		System.out.println("-----TEST testDeleteAtleta FINE-----");
 
 	}
-	
+
 	private static void testUpdateAtleta(AtletaService atletaServiceInstance) throws Exception {
 		System.out.println("-----TEST testUpdateAtleta INIZIO-----");
 		List<Atleta> listaAtleti = atletaServiceInstance.listAll();
 		if (listaAtleti.size() < 1)
 			throw new RuntimeException("testDeleteAtleta FALLITO: non sono presenti atleti in lista.");
-		
+
 		Atleta atletaDaAggiornare = listaAtleti.get(2);
 		String nuovoNome = "Piero";
 		atletaDaAggiornare.setNome(nuovoNome);
 		atletaServiceInstance.aggiorna(atletaDaAggiornare);
 		System.out.println(atletaDaAggiornare);
 		System.out.println("-----TEST testUpdateAtleta FINE-----");
-	
+
 	}
 
-	
-	
-	
+	private static void testUpdateSport(SportService sportServiceInstance) throws Exception {
+		System.out.println("-----TEST testUpdateAtleta INIZIO-----");
+		List<Sport> listaSport = sportServiceInstance.listAll();
+		if (listaSport.size() < 1)
+			throw new RuntimeException("testUpdateSport FALLITO: non sono presenti sport in lista.");
+		Sport sportDaAggiornare = listaSport.get(3);
+		String nuovaDescrizione = "Sumo";
+		sportDaAggiornare.setDescrizione(nuovaDescrizione);
+		sportServiceInstance.aggiorna(sportDaAggiornare);
+		System.out.println(sportDaAggiornare);
+		System.out.println("-----TEST testUpdateAtleta FINE-----");
+	}
+
+	private static void testDeleteSport(SportService sportServiceInstance) throws Exception {
+		System.out.println("-----TEST testDeleteSport INIZIO-----");
+		List<Sport> listaSportPrimaDellaRimozione = sportServiceInstance.listAll();
+		if (listaSportPrimaDellaRimozione.size() < 1)
+			throw new RuntimeException("testDeleteSport FALLITO: non sono presenti sport in lista.");
+
+		// inserisco uno sport per poi eliminarlo
+		Sport nuovoSport = new Sport("Corsa");
+		sportServiceInstance.inserisciNuovo(nuovoSport);
+		if (nuovoSport.getId() == null) {
+			throw new RuntimeException("testDeleteSport FALLITO: atleta non inserito.");
+		}
+		sportServiceInstance.rimuovi(nuovoSport.getId());
+		List<Sport> listaSportDopoDellaRimozione = sportServiceInstance.listAll();
+		if (listaSportPrimaDellaRimozione.size() != listaSportDopoDellaRimozione.size())
+			throw new RuntimeException("testDeleteSport FALLITO: sport non rimosso.");
+		System.out.println("-----TEST testDeleteSport FINE-----");
+
+	}
+
+	private static void testTrovaErrori(SportService sportServiceInstance) throws Exception {
+		System.out.println("-----TEST testTrovaErrori INIZIO-----");
+		List<Sport> listaSport = sportServiceInstance.listAll();
+		if (listaSport.size() < 1)
+			throw new RuntimeException("testTrovaErrori FALLITO: non sono presenti sport in lista.");
+		Sport sportConErrore = new Sport("Palestra", LocalDate.now(), LocalDate.of(2000, 12, 1));
+		sportServiceInstance.inserisciNuovo(sportConErrore);
+		if (sportConErrore.getId() == null) {
+			throw new RuntimeException("testTrovaErrori FALLITO: sportConErrore non inserito");
+		}
+		List<Sport> listaErrori = sportServiceInstance.cercaErrori();
+		if (listaErrori.size() < 1) {
+			throw new RuntimeException("testTrovaErrori FALLITO: non sono presenti errori");
+		}
+		System.out.println(listaErrori);
+		sportServiceInstance.rimuovi(sportConErrore.getId());
+		List<Sport> listaSportDopoRimozione = sportServiceInstance.listAll();
+		if (listaSport.size() != listaSportDopoRimozione.size())
+			throw new RuntimeException("testTrovaErrori FALLITO: sport non rimosso.");
+		System.out.println("-----TEST testTrovaErrori FINE-----");
+
+	}
+
+	private static void testSommaMedaglieInSportChiusi(AtletaService atletaServiceInstance) throws Exception {
+		System.out.println("-----TEST testSommaMedaglieInSportChiusi INIZIO-----");
+		List<Atleta> listaAtleti = atletaServiceInstance.listAll();
+		if (listaAtleti.size() < 1)
+			throw new RuntimeException("testSommaMedaglieInSportChiusi FALLITO: non sono presenti atleti in lista.");
+		Long sommaMedaglie = atletaServiceInstance.sommaMedaglieVinteInSportChiusi();
+		System.out.println("La somma delle medaglie vinte in sport chiusi è: " + sommaMedaglie);
+		System.out.println("-----TEST testSommaMedaglieInSportChiusi FINE-----");
+	}
+
 }

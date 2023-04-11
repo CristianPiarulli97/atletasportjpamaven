@@ -167,4 +167,24 @@ public class SportServiceImpl implements SportService {
 		}
 	}
 	
+	
+	public Sport cercaPerDescrizione(String descrizione) throws Exception {
+		EntityManager entityManager = EntityManagerUtil.getEntityManager();
+
+		try {
+			// uso l'injection per il dao
+			sportDAO.setEntityManager(entityManager);
+
+			// eseguo metodo
+			return sportDAO.findByDescrizione(descrizione);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			EntityManagerUtil.closeEntityManager(entityManager);
+		}
+	}
+	
+	
 }

@@ -23,6 +23,9 @@ public interface SportService {
 	
 	public List <Sport> cercaErrori() throws Exception;
 	
+	public Sport cercaPerDescrizione(String descrizione) throws Exception;
+
+	
 	
 	
 	void setSportDAO(SportDAO sportDAOInstance);

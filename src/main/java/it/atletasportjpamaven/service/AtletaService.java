@@ -5,6 +5,7 @@ import java.util.List;
 import it.atletasportjpamaven.dao.AtletaDAO;
 import it.atletasportjpamaven.dao.SportDAO;
 import it.atletasportjpamaven.model.Atleta;
+import it.atletasportjpamaven.model.Sport;
 
 public interface AtletaService {
 	
@@ -21,6 +22,11 @@ public interface AtletaService {
 
 	public Long sommaMedaglieVinteInSportChiusi() throws Exception;
 	
+	public void aggiungiSport(Atleta atletaEsistente, Sport sportInstance) throws Exception;
+	
+	public List<Atleta> listaAtletiAppartenentiAUnoSport(String descrizione) throws Exception;
+
+	public void rimuoviSport(Atleta atletaEsistente, Sport sportInstance) throws Exception;
 
 	
 	

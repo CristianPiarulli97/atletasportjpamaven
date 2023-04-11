@@ -19,20 +19,26 @@ public class TestAtletasportjpamaven {
 
 		try {
 
-			// testInserisciNuovoSport(sportServiceInstance);
+			//  testInserisciNuovoSport(sportServiceInstance);
 
-			// testInserisciNuovoAtleta(atletaServiceInstance);
+			//  testInserisciNuovoAtleta(atletaServiceInstance);
 
-			// testDeleteAtleta(atletaServiceInstance);
+			//  testDeleteAtleta(atletaServiceInstance);
 
-			// testUpdateAtleta(atletaServiceInstance);
+			//  testUpdateAtleta(atletaServiceInstance);
 
-			// testDeleteSport(sportServiceInstance);
+			//	testUpdateSport(sportServiveInstance);
+			
+			//  testDeleteSport(sportServiceInstance);
 
 			// 	testTrovaErrori(sportServiceInstance);
 			
-				testSommaMedaglieInSportChiusi(atletaServiceInstance);
+			//	testSommaMedaglieInSportChiusi(atletaServiceInstance);
 
+			//	testCollegaAtletaASportEsistente(atletaServiceInstance, sportServiceInstance);
+			
+			//	testScollegaAtletaASportEsistenteERimuoviAtleta(atletaServiceInstance, sportServiceInstance);
+				
 			// System.out.println(atletaServiceInstance.listAll());
 			// System.out.println(sportServiceInstance.listAll());
 
@@ -168,4 +174,50 @@ public class TestAtletasportjpamaven {
 		System.out.println("-----TEST testSommaMedaglieInSportChiusi FINE-----");
 	}
 
+	
+	
+	private static void testCollegaAtletaASportEsistente(AtletaService atletaServiceInstance,
+			SportService sportServiceInstance) throws Exception {
+		System.out.println("-----TEST testCollegaAtletaASportEsistente INIZIO-----");
+
+		Sport sportEsistenteSuDB = sportServiceInstance.cercaPerDescrizione("Basket");
+		if (sportEsistenteSuDB == null) {
+			throw new RuntimeException("testInserisciNuovoAtleta FALLITO: sport inesistente");
+		}
+
+		List<Atleta> listaAtleti = atletaServiceInstance.listAll();
+		if (listaAtleti.size() < 1) {
+			throw new RuntimeException("testInserisciNuovoAtleta FALLITO: Non ci sono atleti nel DB");
+		}
+		Atleta atletaEsistente = listaAtleti.get(1);
+		atletaServiceInstance.aggiungiSport(atletaEsistente, sportEsistenteSuDB);
+		Atleta altetaReloaded = atletaServiceInstance.caricaSingoloElemento(atletaEsistente.getId());
+		if (altetaReloaded.getSports().size() != 1)
+			throw new RuntimeException("testInserisciNuovoAtleta FALLITO: sport non collegato");
+		System.out.println("-----TEST testCollegaAtletaASportEsistente FINE-----");
+	}
+	
+	private static void testScollegaAtletaASportEsistenteERimuoviAtleta(AtletaService atletaServiceInstance,
+			SportService sportServiceInstance) throws Exception {
+		System.out.println("-----TEST testScollegaAtletaASportEsistenteERimuoviAtleta INIZIO-----");
+
+		Sport sportEsistenteSuDB = sportServiceInstance.cercaPerDescrizione("Basket");
+		if (sportEsistenteSuDB == null) {
+			throw new RuntimeException("testScollegaAtletaASportEsistenteERimuoviAtleta FALLITO: sport inesistente");
+		}
+		String descrizioneSportDaScollegare = sportEsistenteSuDB.getDescrizione();
+		List<Atleta> listaAtleti = atletaServiceInstance.listaAtletiAppartenentiAUnoSport(descrizioneSportDaScollegare);
+		if (listaAtleti.size() < 1) {
+			throw new RuntimeException("testScollegaAtletaASportEsistenteERimuoviAtleta FALLITO: Non ci sono atleti che fanno sport con questa descrizione");
+		}
+		Atleta atletaEsistente = listaAtleti.get(0);
+		atletaServiceInstance.rimuoviSport(atletaEsistente, sportEsistenteSuDB);
+		Atleta altetaReloaded = atletaServiceInstance.caricaSingoloElemento(atletaEsistente.getId());
+		if (altetaReloaded.getSports().size() != 0)
+			throw new RuntimeException("testScollegaAtletaASportEsistenteERimuoviAtleta FALLITO: sport non scollegato");
+		atletaServiceInstance.rimuovi(atletaEsistente.getId());
+		System.out.println("-----TEST testScollegaAtletaASportEsistenteERimuoviAtleta FINE-----");
+
+	}
+	
 }
